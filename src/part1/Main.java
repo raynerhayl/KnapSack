@@ -51,11 +51,11 @@ public class Main {
 
         try {
             File f = (new File("res/parcels.txt"));
-            if(f.exists()) {
+            if (f.exists()) {
 
                 Scanner scanner = new Scanner(f);
                 while (scanner.hasNext()) {
-                    parcels.add(new Parcel(scanner.nextInt(),scanner.nextInt()));
+                    parcels.add(new Parcel(scanner.nextInt(), scanner.nextInt()));
                 }
             } else {
                 System.out.println("File doesn't exist");
@@ -123,14 +123,24 @@ public class Main {
         int subMaxWeight = dyArray.length - 1;
         int subParcel = dyArray[0].length - 1;
 
-        while (subMaxWeight > 0 && subParcel > 0) {
-            int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
-            if (previousSolution == solutionWeight) {
-                parcelList.get(subParcel).setStatus(false); // parcel isnt in solution
+        while (subMaxWeight >= 0 && subParcel >= 0) {
+            if (subMaxWeight == 0) {
+                parcelList.get(subParcel).setStatus(false); // finished subProblem without this parcel
+            } else if (subParcel == 0) {
+                if (parcelList.get(subParcel).getWeight() < subMaxWeight) { // first subProblem may have non zero maxWeight
+                    parcelList.get(subParcel).setStatus(true);
+                }
             } else {
-                parcelList.get(subParcel).setStatus(true); // parcel is in the solution
-                int previousSubMaxWeight = subMaxWeight - parcelList.get(subParcel).getWeight();
-                subMaxWeight = previousSubMaxWeight;
+                solutionWeight = dyArray[subMaxWeight][subParcel];
+                int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
+                if (previousSolution == solutionWeight) {
+                    System.out.println(previousSolution + " " + solutionWeight);
+                    parcelList.get(subParcel).setStatus(false); // parcel isnt in solution
+                } else {
+                    parcelList.get(subParcel).setStatus(true); // parcel is in the solution
+                    int previousSubMaxWeight = subMaxWeight - parcelList.get(subParcel).getWeight();
+                    subMaxWeight = previousSubMaxWeight;
+                }
             }
             subParcel = subParcel - 1;
         }
