@@ -15,7 +15,7 @@ public class Main {
 
         //loadParcels();
 
-        Collections.sort(parcels);
+        //Collections.sort(parcels);
 
         System.out.println("Parcel Array: ");
 
@@ -123,7 +123,7 @@ public class Main {
         int subMaxWeight = dyArray.length - 1;
         int subParcel = dyArray[0].length - 1;
 
-        while (subMaxWeight > 0) {
+        while (subMaxWeight > 0 && subParcel > 0) {
             int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
             if (previousSolution == solutionWeight) {
                 parcelList.get(subParcel).setStatus(false); // parcel isnt in solution

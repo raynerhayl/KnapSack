@@ -46,7 +46,7 @@ public class Parcel implements Comparable<Parcel> {
     }
 
     public int compareTo(Parcel toCompare){
-        return this.weight-toCompare.getWeight();
+        return this.value-toCompare.getValue();
     }
 
     @Override
