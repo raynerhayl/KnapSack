@@ -41,7 +41,7 @@ public class Main {
         getSolution(parcels);
 
         for (int i = 0; i < parcels.size(); i++) {
-            System.out.println(parcels.get(i) + " " + parcels.get(i).isStatus());
+            System.out.println(parcels.get(i) + " " + parcels.get(i).getNum());
         }
 
     }
@@ -128,7 +128,7 @@ public class Main {
                 parcelList.get(subParcel).setStatus(false); // finished subProblem without this parcel
             } else if (subParcel == 0) {
                 if (parcelList.get(subParcel).getWeight() < subMaxWeight) { // first subProblem may have non zero maxWeight
-                    parcelList.get(subParcel).setStatus(true);
+                    parcelList.get(subParcel).incNum();
                 }
             } else {
                 solutionWeight = dyArray[subMaxWeight][subParcel];
@@ -137,7 +137,7 @@ public class Main {
                     System.out.println(previousSolution + " " + solutionWeight);
                     parcelList.get(subParcel).setStatus(false); // parcel isnt in solution
                 } else {
-                    parcelList.get(subParcel).setStatus(true); // parcel is in the solution
+                    parcelList.get(subParcel).incNum(); // parcel is in the solution
                     int previousSubMaxWeight = subMaxWeight - parcelList.get(subParcel).getWeight();
                     subMaxWeight = previousSubMaxWeight;
                 }

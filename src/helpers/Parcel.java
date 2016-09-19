@@ -13,6 +13,7 @@ public class Parcel implements Comparable<Parcel> {
 
     private int weight;
     private int value;
+    private int num = 0;
     private boolean status;
 
     public Parcel(int weight,int value) {
@@ -47,6 +48,18 @@ public class Parcel implements Comparable<Parcel> {
 
     public int compareTo(Parcel toCompare){
         return this.value-toCompare.getValue();
+    }
+
+    public void incNum(){
+        this.num ++;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 
     @Override
