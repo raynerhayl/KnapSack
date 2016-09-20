@@ -1,5 +1,6 @@
 package part1;
 
+import helpers.KnapSackDisplay;
 import helpers.Parcel;
 
 import java.io.File;
@@ -16,6 +17,10 @@ public class Main {
         //loadParcels();
 
         //Collections.sort(parcels);
+
+        String printOutput = KnapSackDisplay.printKnapSack(parcels);
+
+        System.out.println(printOutput);
 
         System.out.println("Parcel Array: ");
 
