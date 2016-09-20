@@ -18,10 +18,6 @@ public class Main {
 
         //Collections.sort(parcels);
 
-        String printOutput = KnapSackDisplay.printKnapSack(parcels);
-
-        System.out.println(printOutput);
-
         System.out.println("Parcel Array: ");
 
         for (Parcel parcel : parcels) {
@@ -41,13 +37,12 @@ public class Main {
         }
 
         System.out.println("\n");
-        System.out.println("Printing Solution: ");
-
+        System.out.println("Printing Solution: \n");
         getSolution(parcels);
 
-        for (int i = 0; i < parcels.size(); i++) {
-            System.out.println(parcels.get(i) + " " + parcels.get(i).getNum());
-        }
+        String printOutput = KnapSackDisplay.printKnapSack(parcels);
+
+        System.out.println(printOutput);
 
     }
 
@@ -129,6 +124,7 @@ public class Main {
         int subParcel = dyArray[0].length - 1;
 
         while (subMaxWeight >= 0 && subParcel >= 0) {
+
             if (subMaxWeight == 0) {
                 parcelList.get(subParcel).setStatus(false); // finished subProblem without this parcel
             } else if (subParcel == 0) {
