@@ -18,10 +18,15 @@ public class EnumerateSolver extends Solver {
 
     public List<Parcel> solve(int maxWeight){
         List<Parcel> solution = new ArrayList<Parcel>();
+        List<Parcel> parsedList = new ArrayList<Parcel>(); // contain an enumerated selection of parcels
 
-        for(int i = 0; i < parcelList.size(); i++){
-            
+        for(int i = 0; i < parsedList.size(); i++){
+            for(int j = 0; j < maxWeight/parcelList.get(i).getWeight(); j++){
+                parsedList.add(parcelList.get(i));
+            }
         }
+
+        // permutate the parsedList and optimize result
 
         return solution;
     }
