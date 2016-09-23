@@ -1,11 +1,15 @@
 package helpers;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Haylem on 19/09/2016.
  */
-public class KnapSackDisplay {
+public class KnapSackHelpers {
 
 
     public static String printKnapSack(List<Parcel> parcels) {
@@ -49,6 +53,39 @@ public class KnapSackDisplay {
             maxValues[2] = (maxValues[2] < String.valueOf(parcel.getNum()).length()) ? String.valueOf(parcel.getNum()).length() : maxValues[2];
         }
         return maxValues;
+    }
+
+    public static List<Parcel> loadParcels(String filename) {
+        List<Parcel> parcels = new ArrayList<Parcel>();
+
+        try {
+            File f = (new File(filename));
+            if (f.exists()) {
+
+                Scanner scanner = new Scanner(f);
+                while (scanner.hasNext()) {
+                    parcels.add(new Parcel(scanner.nextInt(), scanner.nextInt()));
+                }
+            } else {
+                System.out.println("File doesn't exist");
+            }
+        } catch (IOException e) {
+
+        }
+
+        return parcels;
+    }
+
+    public static List<Parcel> loadParcels(){
+        return loadParcels("res/parcels.txt");
+    }
+
+    public static List<Parcel> copyList(List<Parcel> parcelList){
+        List<Parcel> copy = new ArrayList<Parcel>();
+        for(int i = 0; i < parcelList.size(); i++){
+            copy.add(new Parcel(parcelList.get(i)));
+        }
+        return copy;
     }
 
 }

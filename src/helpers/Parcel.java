@@ -22,6 +22,12 @@ public class Parcel implements Comparable<Parcel> {
         status = false;
     }
 
+    public Parcel(Parcel parcel){
+        this.weight = parcel.getWeight();
+        this.value = parcel.getValue();
+        this.status = parcel.isStatus();
+    }
+
     public int getWeight() {
         return weight;
     }
