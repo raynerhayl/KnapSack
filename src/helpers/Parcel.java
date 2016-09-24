@@ -60,12 +60,17 @@ public class Parcel implements Comparable<Parcel> {
         this.num ++;
     }
 
-    public int getNum() {
-        return num;
+    public void setNum(int num){
+        this.num = num;
+        if(num > 0) {
+            this.setStatus(true);
+        } else {
+            this.setStatus(false);
+        }
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public int getNum() {
+        return num;
     }
 
     @Override

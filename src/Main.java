@@ -26,19 +26,27 @@ public class Main {
             }
             List<Parcel> solutionList = new ArrayList<>();
 
+            int maxWeight = askInt(scanner, "Enter maximum weight");
+
+            Solver solver = new DynammicSolver(parcelList);
+
             if(askBoolean(scanner,"Run 0-1 KnapSack Assumption")){
 
-                int maxWeight = askInt(scanner, "Enter maximum weight");
-
-                Solver solver;
                 if(askBoolean(scanner,"Solve using dynammic solution (Y) or enumeration (N)")){
                     solver = new DynammicSolver(parcelList);
                 } else {
-                    solver = new EnumerateSolver(parcelList);
+                    solver = new EnumerateSolver(parcelList, false);
                 }
-                solutionList = solver.solve(maxWeight);
-                printSolutions(solutionList);
+            } else {
+                if(askBoolean(scanner, "Run using Enumeration?")){
+                    solver = new EnumerateSolver(parcelList, true);
+                }
             }
+
+            solutionList = solver.solve(maxWeight);
+
+            printSolutions(solutionList);
+
 
             repeat = askBoolean(scanner, "Repeat program ");
 

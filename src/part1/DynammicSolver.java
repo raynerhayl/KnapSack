@@ -15,6 +15,7 @@ public class DynammicSolver extends Solver {
     }
 
     public List<Parcel> solve(int maxWeight){
+        System.out.println("Running 0-1 using Dynammic Implementation... ");
         List<Parcel> solution;
 
         initArray(maxWeight);

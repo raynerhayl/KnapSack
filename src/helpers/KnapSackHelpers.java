@@ -2,6 +2,7 @@ package helpers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,9 +16,9 @@ public class KnapSackHelpers {
     public static String printKnapSack(List<Parcel> parcels) {
         int[] maxValues = getMaxStringSize(parcels);
         int maxWidth = maxValues[0] + maxValues[1] + maxValues[1];
-        String st = append("","-",maxValues[0]).concat("W-");
-        st = append(st,"-",maxValues[1]-1).concat("V-");
-        st = append(st,"-",maxValues[2]-1).concat("N-\n");
+        String st = append("", "-", maxValues[0]).concat("W-");
+        st = append(st, "-", maxValues[1] - 1).concat("V-");
+        st = append(st, "-", maxValues[2] - 1).concat("N-\n");
 
         for (int i = 0; i < parcels.size(); i++) {
             Parcel parcel = parcels.get(i);
@@ -25,7 +26,7 @@ public class KnapSackHelpers {
             String value = String.format("%" + maxValues[1] + "d", parcel.getValue());
             String num = String.format("%" + maxValues[2] + "d", parcel.getNum());
 
-            st = st.concat(" "+weight + " " + value + " " + num + "\n");
+            st = st.concat(" " + weight + " " + value + " " + num + "\n");
         }
 
         return st;
@@ -76,13 +77,23 @@ public class KnapSackHelpers {
         return parcels;
     }
 
-    public static List<Parcel> loadParcels(){
+    public void printText(String text, String filename) {
+        try {
+            PrintWriter writer = new PrintWriter(filename, "UTF-8");
+            writer.print(text);
+            writer.close();
+        } catch (IOException e) {
+
+        }
+    }
+
+    public static List<Parcel> loadParcels() {
         return loadParcels("res/parcels.txt");
     }
 
-    public static List<Parcel> copyList(List<Parcel> parcelList){
+    public static List<Parcel> copyList(List<Parcel> parcelList) {
         List<Parcel> copy = new ArrayList<Parcel>();
-        for(int i = 0; i < parcelList.size(); i++){
+        for (int i = 0; i < parcelList.size(); i++) {
             copy.add(new Parcel(parcelList.get(i)));
         }
         return copy;
