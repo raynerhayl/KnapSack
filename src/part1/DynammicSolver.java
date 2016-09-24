@@ -92,7 +92,6 @@ public class DynammicSolver extends Solver {
                 solutionWeight = dyArray[subMaxWeight][subParcel];
                 int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
                 if (previousSolution == solutionWeight) {
-                    System.out.println(previousSolution + " " + solutionWeight);
                     copy.get(subParcel).setStatus(false); // parcel isnt in solution
                 } else {
                     copy.get(subParcel).incNum(); // parcel is in the solution
