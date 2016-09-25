@@ -47,7 +47,7 @@ public class KnapSackHelpers {
      * @return
      */
     private static int[] getMaxStringSize(List<Parcel> parcels) {
-        int[] maxValues = new int[]{Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE};
+        int[] maxValues = new int[]{-1,-1,-1};
         for (Parcel parcel : parcels) {
             maxValues[0] = (maxValues[0] < String.valueOf(parcel.getWeight()).length()) ? String.valueOf(parcel.getWeight()).length() : maxValues[0];
             maxValues[1] = (maxValues[1] < String.valueOf(parcel.getValue()).length()) ? String.valueOf(parcel.getValue()).length() : maxValues[1];

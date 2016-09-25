@@ -74,12 +74,14 @@ public class EnumerateSolver extends Solver {
             }
         }
 
-        for (int i = 0; i < parcelList.size(); i++) {
-            solution.add(parcelList.get(i));
-            solution.get(i).setNum(permutations.get(maxIndex)[i]);
-        }
+        if(permutations.isEmpty()==false) {
+            for (int i = 0; i < parcelList.size(); i++) {
+                solution.add(parcelList.get(i));
+                solution.get(i).setNum(permutations.get(maxIndex)[i]);
+            }
 
-        solution.add(new Parcel(0,maxValue));
+            solution.add(new Parcel(0, maxValue));
+        }
 
         return solution;
     }

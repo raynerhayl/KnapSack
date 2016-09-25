@@ -12,12 +12,12 @@ public class DynammicSolver extends Solver {
     private int[][] dyArray;
     private Barometer barometer;
 
-    public DynammicSolver(List<Parcel> parcelList, Barometer barometer) {
+    public DynammicSolver(List<Parcel> parcelList) {
         super(parcelList);
         this.barometer = barometer;
     }
 
-    public List<Parcel> solve(int maxWeight){
+    public List<Parcel> solve(int maxWeight) {
         System.out.println("Running 0-1 using Dynammic Implementation... ");
         List<Parcel> solution;
 
@@ -64,7 +64,7 @@ public class DynammicSolver extends Solver {
 
                     subSolution = Math.max(previousSubSolution, nextLowestSubSolution);
                 }
-                barometer.incrementCost();
+                //barometer.incrementCost();
 
                 dyArray[subMaxWeight][subParcel] = subSolution;
 
@@ -76,40 +76,44 @@ public class DynammicSolver extends Solver {
      * Back tracks through the array of subProblems, constructing the
      * solution of parcels given the same parcelList used to optimize
      * the subProblems.
-     *
      */
     private List<Parcel> getSolution() {
         List<Parcel> copy = KnapSackHelpers.copyList(parcelList);
 
-        int solutionValue = dyArray[dyArray.length - 1][dyArray[0].length - 1];
-        int subMaxWeight = dyArray.length - 1;
-        int subParcel = dyArray[0].length - 1;
+        int finalValue = 0;
 
-        int finalValue = solutionValue;
 
-        while (subMaxWeight >= 0 && subParcel >= 0) {
+        if (parcelList.size() > 0) {
 
-            if (subMaxWeight == 0) {
-                parcelList.get(subParcel).setStatus(false); // finished subProblem without this parcel
-            } else if (subParcel == 0) {
-                if (parcelList.get(subParcel).getWeight() < subMaxWeight) { // first subProblem may have non zero maxWeight
-                    copy.get(subParcel).incNum();
-                }
-            } else {
-                solutionValue = dyArray[subMaxWeight][subParcel];
-                int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
-                if (previousSolution == solutionValue) {
-                    copy.get(subParcel).setStatus(false); // parcel isnt in solution
+            int solutionValue = dyArray[dyArray.length - 1][dyArray[0].length - 1];
+            int subMaxWeight = dyArray.length - 1;
+            int subParcel = dyArray[0].length - 1;
+
+            finalValue = solutionValue;
+
+            while (subMaxWeight >= 0 && subParcel >= 0) {
+
+                if (subMaxWeight == 0) {
+                    parcelList.get(subParcel).setStatus(false); // finished subProblem without this parcel
+                } else if (subParcel == 0) {
+                    if (parcelList.get(subParcel).getWeight() < subMaxWeight) { // first subProblem may have non zero maxWeight
+                        copy.get(subParcel).incNum();
+                    }
                 } else {
-                    copy.get(subParcel).incNum(); // parcel is in the solution
-                    int previousSubMaxWeight = subMaxWeight - parcelList.get(subParcel).getWeight();
-                    subMaxWeight = previousSubMaxWeight;
+                    solutionValue = dyArray[subMaxWeight][subParcel];
+                    int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
+                    if (previousSolution == solutionValue) {
+                        copy.get(subParcel).setStatus(false); // parcel isnt in solution
+                    } else {
+                        copy.get(subParcel).incNum(); // parcel is in the solution
+                        int previousSubMaxWeight = subMaxWeight - parcelList.get(subParcel).getWeight();
+                        subMaxWeight = previousSubMaxWeight;
+                    }
                 }
+                subParcel = subParcel - 1;
             }
-            subParcel = subParcel - 1;
         }
-
-        copy.add(new Parcel(0,finalValue));
+        copy.add(new Parcel(0, finalValue));
 
         return copy;
     }

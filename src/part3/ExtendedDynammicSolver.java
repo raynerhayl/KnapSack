@@ -41,7 +41,7 @@ public class ExtendedDynammicSolver extends Solver {
             }
         }
 
-        DynammicSolver solver = new DynammicSolver(parsedList, null);
+        DynammicSolver solver = new DynammicSolver(parsedList);
         List<Parcel> simpleSolutionList = solver.solve(maxWeight);
         List<Parcel> solutionList = new ArrayList<Parcel>();
 

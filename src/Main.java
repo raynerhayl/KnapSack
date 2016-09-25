@@ -17,7 +17,31 @@ public class Main {
         boolean repeat = true;
         while (repeat == true) {
             if (askBoolean(scanner, "Run tests or continue to main program")) {
-                Tester.generateTestFile("test.txt",18,20,10,3);
+                String filename = null;
+                if (askBoolean(scanner, "Create test file?")) {
+                    int maxWeight = askInt(scanner, "Enter maximum weight of parcel.");
+                    int maxValue = askInt(scanner, "Enter maximum value.");
+                    int knapSackWeight = askInt(scanner, "Enter maximum weight of KnapSack.");
+                    int numParcel = askInt(scanner, "Enter maximum number of parcels.");
+                    int numTests = askInt(scanner, "Enter number of tests.");
+
+                    boolean polyEnumeration = askBoolean(scanner, "0-N (Y) or 0-1 (N)");
+                    System.out.println("Polyenumeration: " + polyEnumeration);
+                    System.out.println("Enter file name to print test results to.");
+
+                    filename = getFile(scanner);
+                    Tester.generateTestFile(filename, maxWeight, maxValue, knapSackWeight, numParcel, polyEnumeration,numTests);
+                }
+
+                if (askBoolean(scanner, "Run tests?")) {
+                    filename = getFile(scanner);
+
+                    if (askBoolean(scanner, "Run using dynammic programming?")) {
+                        Tester.testSolver(filename, 18, new ExtendedDynammicSolver(null));
+                    } else {
+                        Tester.testSolver(filename, 18, new EnumerateSolver(null, false));
+                    }
+                }
             } else {
                 List<Parcel> parcelList;
                 if (askBoolean(scanner, "Use provided file or default one.")) {
@@ -31,12 +55,12 @@ public class Main {
                 int maxWeight = askInt(scanner, "Enter maximum weight");
 
                 Barometer barometer = new Barometer("dynammicBarometer.txt", maxWeight);
-                Solver solver = new DynammicSolver(parcelList, barometer);
+                Solver solver = new DynammicSolver(parcelList);
 
                 if (askBoolean(scanner, "Run 0-1 KnapSack Assumption")) {
 
                     if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
-                        solver = new DynammicSolver(parcelList, barometer);
+                        solver = new DynammicSolver(parcelList);
                     } else {
                         solver = new EnumerateSolver(parcelList, false);
                     }
@@ -75,7 +99,7 @@ public class Main {
             result = scanner.next().toLowerCase();
         }
 
-        if (result.equals("y")) {
+        if (result.equalsIgnoreCase("y")) {
             return true;
         } else {
             return false;
@@ -85,7 +109,7 @@ public class Main {
     public int askInt(Scanner scanner, String question) {
         String result = "null";
         while (result.matches("\\d+") == false) {
-            System.out.println(question + " (Y/N) ?");
+            System.out.println(question + ". Please enter a valid number.");
             result = scanner.next();
         }
         return Integer.valueOf(result);
@@ -93,7 +117,7 @@ public class Main {
 
     public String getFile(Scanner scanner) {
         String fileName = "";
-        while (fileName.endsWith(".txt")) {
+        while (fileName.endsWith(".txt") == false) {
             System.out.println("Please enter file name of .txt with list of parcels: \n");
             fileName = scanner.next();
         }

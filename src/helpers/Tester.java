@@ -1,36 +1,56 @@
 package helpers;
 
+import part1.DynammicSolver;
 import part2.EnumerateSolver;
+import part3.ExtendedDynammicSolver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by Haylem on 25/09/2016.
  */
 public class Tester {
 
-    public static void generateTestFile(String filename, int maxCost, int maxValue, int maxWeight, int numParcels) {
+    public static void generateTestFile(String filename, int maxCost, int maxValue, int maxWeight, int numParcels, boolean polyEnumeration, int numTests) {
         try {
+            System.out.println("FILENAME: " + filename);
             PrintWriter writer = new PrintWriter(filename, "UTF-8");
-            List<Parcel> parcelPool = generateParcels(maxCost,maxValue,numParcels);
+            List<Parcel> parcelPool = generateParcels(maxCost, maxValue, numTests);
 
-            for(int i = 1; i < numParcels; i++){
-                System.out.println("OUTERFOR");
+            writer.println(polyEnumeration);
+
+            System.out.println("1");
+
+            for (int i = 1;  i <= numTests; i++) {
+                System.out.println("2");
                 List<Parcel> parcelList = new ArrayList<>();
-                for(int j = 1; j < i; j++){
-                    System.out.println("INNERFOR");
-                    parcelList.add(parcelPool.get((int)(Math.random()*i)));
+                Set<Integer> selected = new HashSet<>();
+
+                int parcelSize = (i < numParcels) ? i : numParcels;
+
+                for (int j = 0; j < parcelSize; j++) {
+                    int index = (int) (Math.random() * numTests);
+                    while (selected.contains(index)) {
+                        index = (int) (Math.random() * numTests);
+                    }
+                    selected.add(index);
+                    parcelList.add(parcelPool.get(index)); // shouldn't have repeats
+                    System.out.println("3");
                 }
-                EnumerateSolver solver = new EnumerateSolver(parcelList, true);
-                List<Parcel> solution = solver.getSolution();
+                System.out.println(parcelList.size() + " " + parcelPool.size());
+                EnumerateSolver solver = new EnumerateSolver(parcelList, polyEnumeration);
+                System.out.println("SOLVING");
+                List<Parcel> solution = solver.solve(18);
 
-                int solutionValue = solution.remove(solution.size()-1).getValue();
+
+                int solutionValue = (solution.size() > 0) ? solution.remove(solution.size() - 1).getValue() : 0;
                 String knapSack = KnapSackHelpers.printKnapSack(solution);
-                knapSack= knapSack.concat(String.valueOf(solutionValue));
 
+                knapSack = knapSack.concat("V= " + String.valueOf(solutionValue));
                 writer.println(knapSack);
                 writer.flush();
             }
@@ -42,11 +62,76 @@ public class Tester {
 
     }
 
+    public static List<List<Parcel>> testSolver(String filename, int maxCost, Solver solverType) {
+        List<List<Parcel>> failedLists = new ArrayList<>();
+
+
+        try {
+            Scanner scanner = new Scanner(new File(filename));
+            boolean polyEnumeration = scanner.nextBoolean();
+            while (scanner.hasNext()) {
+                List<Parcel> parcelList = new ArrayList<Parcel>();
+                List<Parcel> masterSolution = new ArrayList<Parcel>();
+                while (scanner.hasNextInt()) {
+                    int weight = scanner.nextInt();
+                    int value = scanner.nextInt();
+                    int num = scanner.nextInt();
+
+                    masterSolution.add(new Parcel(weight, value));
+                    masterSolution.get(masterSolution.size() - 1).setNum(num);
+
+                    parcelList.add(new Parcel(weight, value));
+                }
+                String token = scanner.next();
+                if (token.startsWith("V")) {
+
+                    int solutionValue = scanner.nextInt();
+
+                    Solver solver = null;
+                    if (solverType.getClass() == DynammicSolver.class) {
+                        solver = new DynammicSolver(parcelList);
+                    }
+
+                    if (solverType.getClass() == EnumerateSolver.class) {
+                        solver = new EnumerateSolver(parcelList, polyEnumeration);
+                    } else if(polyEnumeration == true){
+                        solver = new ExtendedDynammicSolver(parcelList);
+                    } else {
+                        solver = new DynammicSolver(parcelList);
+                    }
+
+                    List<Parcel> potentialSolution = solver.solve(maxCost);
+                    int potentialValue = potentialSolution.remove(potentialSolution.size()-1).getValue();
+
+                    System.out.println("Expected Solution: ");
+                    System.out.println(KnapSackHelpers.printKnapSack(potentialSolution));
+                    System.out.println("V= "+potentialValue);
+
+                    System.out.println("Actual Solution: ");
+                    System.out.println(KnapSackHelpers.printKnapSack(masterSolution));
+                    System.out.println("V= "+solutionValue);
+
+                    if(potentialValue!=solutionValue){
+                        failedLists.add(masterSolution);
+                    }
+
+                }
+                scanner.nextLine();
+                System.out.println("");
+            }
+            scanner.close();
+        } catch (IOException e) {
+
+        }
+
+        return failedLists;
+    }
+
     private static List<Parcel> generateParcels(int maxCost, int maxValue, int numParcels) {
         List<Parcel> parcels = new ArrayList<>();
         for (int i = 0; i < numParcels; i++) {
-            int cost = (int) (Math.random() * maxCost);
-            int value = (int) (Math.random() * maxValue);
+            int cost = Math.max((int) (Math.random() * maxCost), 1);
+            int value = Math.max((int) (Math.random() * maxValue), 1);
 
             parcels.add(new Parcel(cost, value));
         }
