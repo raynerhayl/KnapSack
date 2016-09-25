@@ -6,24 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc8aa7f2-098f-4626-94aa-8d6597e95a24" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/a3_jar.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/binary.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/binary2.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dynammicBarometer.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nonBinary.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report.docx" afterPath="$PROJECT_DIR$/report.docx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/a3/parcels.txt" afterPath="$PROJECT_DIR$/out/production/a3/parcels.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/parcels.txt" afterPath="$PROJECT_DIR$/res/parcels.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helpers/Barometer.java" afterPath="$PROJECT_DIR$/src/helpers/Barometer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/helpers/Tester.java" afterPath="$PROJECT_DIR$/src/helpers/Tester.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/part1/DynammicSolver.java" afterPath="$PROJECT_DIR$/src/part1/DynammicSolver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/part2/EnumerateSolver.java" afterPath="$PROJECT_DIR$/src/part2/EnumerateSolver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/part3/ExtendedDynammicSolver.java" afterPath="$PROJECT_DIR$/src/part3/ExtendedDynammicSolver.java" />
-    </list>
+    <list default="true" id="fc8aa7f2-098f-4626-94aa-8d6597e95a24" name="Default" comment="" />
     <ignored path="a3.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -185,8 +168,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="-225" />
+    <option name="y" value="108" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -627,8 +610,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-225" y="108" width="1936" height="1056" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
