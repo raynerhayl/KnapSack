@@ -13,8 +13,9 @@ public class Barometer {
     int cost = -1;
     int input = 0;
 
-    public Barometer(String filename){
+    public Barometer(String filename, int input){
         this.filename = filename;
+        this.input = input;
         try{
            writer = new PrintWriter(filename, "UTF-8");
         } catch(IOException e){
@@ -23,12 +24,17 @@ public class Barometer {
     }
 
     public void resetInput(int input){
+        System.out.println("RESETING");
         if(cost >= 0){
             writer.println(this.input+", "+cost);
             writer.flush();
         }
         this.input = input;
         cost = 0;
+    }
+
+    public void incrementCost(){
+        cost++;
     }
 
     public void close(){

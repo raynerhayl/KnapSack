@@ -1,5 +1,6 @@
 package part1;
 
+import helpers.Barometer;
 import helpers.KnapSackHelpers;
 import helpers.Parcel;
 import helpers.Solver;
@@ -9,9 +10,11 @@ import java.util.*;
 public class DynammicSolver extends Solver {
 
     private int[][] dyArray;
+    private Barometer barometer;
 
-    public DynammicSolver(List<Parcel> parcelList) {
+    public DynammicSolver(List<Parcel> parcelList, Barometer barometer) {
         super(parcelList);
+        this.barometer = barometer;
     }
 
     public List<Parcel> solve(int maxWeight){
@@ -46,6 +49,7 @@ public class DynammicSolver extends Solver {
 
                 if (subMaxWeight == 0) {
                     dyArray[subMaxWeight][subParcel] = 0;
+
                 } else if (subParcel == 0) {
                     if (subWeight <= subMaxWeight) {
                         subSolution = subValue;
@@ -60,6 +64,7 @@ public class DynammicSolver extends Solver {
 
                     subSolution = Math.max(previousSubSolution, nextLowestSubSolution);
                 }
+                barometer.incrementCost();
 
                 dyArray[subMaxWeight][subParcel] = subSolution;
 
@@ -76,9 +81,11 @@ public class DynammicSolver extends Solver {
     private List<Parcel> getSolution() {
         List<Parcel> copy = KnapSackHelpers.copyList(parcelList);
 
-        int solutionWeight = dyArray[dyArray.length - 1][dyArray[0].length - 1];
+        int solutionValue = dyArray[dyArray.length - 1][dyArray[0].length - 1];
         int subMaxWeight = dyArray.length - 1;
         int subParcel = dyArray[0].length - 1;
+
+        int finalValue = solutionValue;
 
         while (subMaxWeight >= 0 && subParcel >= 0) {
 
@@ -89,9 +96,9 @@ public class DynammicSolver extends Solver {
                     copy.get(subParcel).incNum();
                 }
             } else {
-                solutionWeight = dyArray[subMaxWeight][subParcel];
+                solutionValue = dyArray[subMaxWeight][subParcel];
                 int previousSolution = dyArray[subMaxWeight][subParcel - 1]; // previous solution, without accepting the current subParcel
-                if (previousSolution == solutionWeight) {
+                if (previousSolution == solutionValue) {
                     copy.get(subParcel).setStatus(false); // parcel isnt in solution
                 } else {
                     copy.get(subParcel).incNum(); // parcel is in the solution
@@ -101,6 +108,9 @@ public class DynammicSolver extends Solver {
             }
             subParcel = subParcel - 1;
         }
+
+        copy.add(new Parcel(0,finalValue));
+
         return copy;
     }
 

@@ -79,6 +79,8 @@ public class EnumerateSolver extends Solver {
             solution.get(i).setNum(permutations.get(maxIndex)[i]);
         }
 
+        solution.add(new Parcel(0,maxValue));
+
         return solution;
     }
 

@@ -1,6 +1,4 @@
-import helpers.KnapSackHelpers;
-import helpers.Parcel;
-import helpers.Solver;
+import helpers.*;
 import part1.DynammicSolver;
 import part2.EnumerateSolver;
 import part3.ExtendedDynammicSolver;
@@ -18,41 +16,50 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean repeat = true;
         while (repeat == true) {
-            List<Parcel> parcelList;
-            if (askBoolean(scanner, "Use provided file or default one.")) {
-                System.out.println("Enter file name .txt ");
-                parcelList = KnapSackHelpers.loadParcels(getFile(scanner));
+            if (askBoolean(scanner, "Run tests or continue to main program")) {
+                Tester.generateTestFile("test.txt",18,20,10,3);
             } else {
-                parcelList = KnapSackHelpers.loadParcels();
-            }
-            List<Parcel> solutionList = new ArrayList<>();
-
-            int maxWeight = askInt(scanner, "Enter maximum weight");
-
-            Solver solver = new DynammicSolver(parcelList);
-
-            if (askBoolean(scanner, "Run 0-1 KnapSack Assumption")) {
-
-                if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
-                    solver = new DynammicSolver(parcelList);
+                List<Parcel> parcelList;
+                if (askBoolean(scanner, "Use provided file or default one.")) {
+                    System.out.println("Enter file name .txt ");
+                    parcelList = KnapSackHelpers.loadParcels(getFile(scanner));
                 } else {
-                    solver = new EnumerateSolver(parcelList, false);
+                    parcelList = KnapSackHelpers.loadParcels();
                 }
-            } else {
-                if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
-                    solver = new ExtendedDynammicSolver(parcelList);
+                List<Parcel> solutionList = new ArrayList<>();
+
+                int maxWeight = askInt(scanner, "Enter maximum weight");
+
+                Barometer barometer = new Barometer("dynammicBarometer.txt", maxWeight);
+                Solver solver = new DynammicSolver(parcelList, barometer);
+
+                if (askBoolean(scanner, "Run 0-1 KnapSack Assumption")) {
+
+                    if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
+                        solver = new DynammicSolver(parcelList, barometer);
+                    } else {
+                        solver = new EnumerateSolver(parcelList, false);
+                    }
                 } else {
-                    solver = new EnumerateSolver(parcelList, true);
+                    if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
+                        solver = new ExtendedDynammicSolver(parcelList);
+                    } else {
+                        solver = new EnumerateSolver(parcelList, true);
+                    }
                 }
+
+                solutionList = solver.solve(maxWeight);
+                barometer.resetInput(maxWeight);
+                barometer.close();
+
+                int solutionValue = solutionList.remove(solutionList.size() - 1).getValue();
+
+                printSolutions(solutionList);
+                System.out.println("V = " + solutionValue);
+
+
+                repeat = askBoolean(scanner, "Repeat program ");
             }
-
-            solutionList = solver.solve(maxWeight);
-
-            printSolutions(solutionList);
-
-
-            repeat = askBoolean(scanner, "Repeat program ");
-
         }
     }
 

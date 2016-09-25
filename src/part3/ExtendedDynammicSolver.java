@@ -41,7 +41,7 @@ public class ExtendedDynammicSolver extends Solver {
             }
         }
 
-        DynammicSolver solver = new DynammicSolver(parsedList);
+        DynammicSolver solver = new DynammicSolver(parsedList, null);
         List<Parcel> simpleSolutionList = solver.solve(maxWeight);
         List<Parcel> solutionList = new ArrayList<Parcel>();
 
@@ -49,11 +49,16 @@ public class ExtendedDynammicSolver extends Solver {
             solutionList.add(new Parcel(parcelList.get(i)));
         }
 
+        Parcel solutionValue = simpleSolutionList.get(simpleSolutionList.size()-1);
+        simpleSolutionList.remove(simpleSolutionList.size()-1);
+
         for (int i = 0; i < simpleSolutionList.size(); i++) {
             if (simpleSolutionList.get(i).getNum()>0) {
                 solutionList.get(indexArray.get(i)).incNum();
             }
         }
+
+        solutionList.add(solutionValue);
 
         return solutionList;
     }
