@@ -68,20 +68,18 @@ public class EnumerateSolver extends Solver {
                 weight += parcelList.get(j).getWeight() * permutations.get(i)[j];
             }
 
-            if (value > maxValue && weight < maxWeight) {
+            if (value > maxValue && weight <= maxWeight) {
                 maxValue = value;
                 maxIndex = i;
             }
         }
 
-        if(permutations.isEmpty()==false) {
-            for (int i = 0; i < parcelList.size(); i++) {
-                solution.add(parcelList.get(i));
-                solution.get(i).setNum(permutations.get(maxIndex)[i]);
-            }
-
-            solution.add(new Parcel(0, maxValue));
+        for (int i = 0; i < parcelList.size(); i++) {
+            solution.add(parcelList.get(i));
+            solution.get(i).setNum(permutations.get(maxIndex)[i]);
         }
+
+        solution.add(new Parcel(0,maxValue));
 
         return solution;
     }

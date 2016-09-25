@@ -10,9 +10,9 @@ import java.util.*;
 public class DynammicSolver extends Solver {
 
     private int[][] dyArray;
-    private Barometer barometer;
+    public Barometer barometer;
 
-    public DynammicSolver(List<Parcel> parcelList) {
+    public DynammicSolver(List<Parcel> parcelList, Barometer barometer) {
         super(parcelList);
         this.barometer = barometer;
     }
@@ -64,12 +64,16 @@ public class DynammicSolver extends Solver {
 
                     subSolution = Math.max(previousSubSolution, nextLowestSubSolution);
                 }
-                //barometer.incrementCost();
+
+                if (barometer != null) {
+                    barometer.incrementCost();
+                }
 
                 dyArray[subMaxWeight][subParcel] = subSolution;
 
             }
         }
+
     }
 
     /**

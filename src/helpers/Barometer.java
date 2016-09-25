@@ -24,7 +24,6 @@ public class Barometer {
     }
 
     public void resetInput(int input){
-        System.out.println("RESETING");
         if(cost >= 0){
             writer.println(this.input+", "+cost);
             writer.flush();

@@ -15,18 +15,15 @@ import java.util.regex.Pattern;
  */
 public class Tester {
 
-    public static void generateTestFile(String filename, int maxCost, int maxValue, int maxWeight, int numParcels, boolean polyEnumeration, int numTests) {
+    public static void generateTestFile(String filename, int maxCost, int maxValue, int maxWeight, int numParcels, boolean polyEnumeration, int numTests, boolean solve) {
         try {
-            System.out.println("FILENAME: " + filename);
             PrintWriter writer = new PrintWriter(filename, "UTF-8");
             List<Parcel> parcelPool = generateParcels(maxCost, maxValue, numTests);
 
             writer.println(polyEnumeration);
 
-            System.out.println("1");
 
-            for (int i = 1;  i <= numTests; i++) {
-                System.out.println("2");
+            for (int i = 1; i <= numTests; i++) {
                 List<Parcel> parcelList = new ArrayList<>();
                 Set<Integer> selected = new HashSet<>();
 
@@ -41,13 +38,20 @@ public class Tester {
                     parcelList.add(parcelPool.get(index)); // shouldn't have repeats
                     System.out.println("3");
                 }
-                System.out.println(parcelList.size() + " " + parcelPool.size());
+
                 EnumerateSolver solver = new EnumerateSolver(parcelList, polyEnumeration);
-                System.out.println("SOLVING");
-                List<Parcel> solution = solver.solve(18);
+                List<Parcel> solution;
+                if (solve) {
+                    solution = solver.solve(maxWeight);
+                } else {
+                    solution = parcelList;
+                }
 
+                int solutionValue = 0;
+                if (solve) {
+                    solutionValue = (solution.size() > 0) ? solution.remove(solution.size() - 1).getValue() : 0;
+                }
 
-                int solutionValue = (solution.size() > 0) ? solution.remove(solution.size() - 1).getValue() : 0;
                 String knapSack = KnapSackHelpers.printKnapSack(solution);
 
                 knapSack = knapSack.concat("V= " + String.valueOf(solutionValue));
@@ -65,6 +69,7 @@ public class Tester {
     public static List<List<Parcel>> testSolver(String filename, int maxCost, Solver solverType) {
         List<List<Parcel>> failedLists = new ArrayList<>();
 
+        Barometer barometer = new Barometer("barometer_" + filename, 0);
 
         try {
             Scanner scanner = new Scanner(new File(filename));
@@ -75,7 +80,12 @@ public class Tester {
                 while (scanner.hasNextInt()) {
                     int weight = scanner.nextInt();
                     int value = scanner.nextInt();
-                    int num = scanner.nextInt();
+
+                    int num = 0;
+                    String numString = scanner.nextLine();
+                    if (numString.length() > 0) {
+                        num = Integer.valueOf(numString.trim());
+                    }
 
                     masterSolution.add(new Parcel(weight, value));
                     masterSolution.get(masterSolution.size() - 1).setNum(num);
@@ -88,30 +98,29 @@ public class Tester {
                     int solutionValue = scanner.nextInt();
 
                     Solver solver = null;
-                    if (solverType.getClass() == DynammicSolver.class) {
-                        solver = new DynammicSolver(parcelList);
-                    }
 
                     if (solverType.getClass() == EnumerateSolver.class) {
                         solver = new EnumerateSolver(parcelList, polyEnumeration);
-                    } else if(polyEnumeration == true){
-                        solver = new ExtendedDynammicSolver(parcelList);
+                    } else if (polyEnumeration == true) {
+                        solver = new ExtendedDynammicSolver(parcelList, barometer);
                     } else {
-                        solver = new DynammicSolver(parcelList);
+                        solver = new DynammicSolver(parcelList, barometer);
                     }
 
                     List<Parcel> potentialSolution = solver.solve(maxCost);
-                    int potentialValue = potentialSolution.remove(potentialSolution.size()-1).getValue();
+                    barometer.resetInput(parcelList.size());
+
+                    int potentialValue = potentialSolution.remove(potentialSolution.size() - 1).getValue();
 
                     System.out.println("Expected Solution: ");
                     System.out.println(KnapSackHelpers.printKnapSack(potentialSolution));
-                    System.out.println("V= "+potentialValue);
+                    System.out.println("V= " + potentialValue);
 
                     System.out.println("Actual Solution: ");
                     System.out.println(KnapSackHelpers.printKnapSack(masterSolution));
-                    System.out.println("V= "+solutionValue);
+                    System.out.println("V= " + solutionValue);
 
-                    if(potentialValue!=solutionValue){
+                    if (potentialValue != solutionValue) {
                         failedLists.add(masterSolution);
                     }
 

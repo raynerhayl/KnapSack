@@ -1,5 +1,6 @@
 package part3;
 
+import helpers.Barometer;
 import helpers.KnapSackHelpers;
 import helpers.Parcel;
 import helpers.Solver;
@@ -18,11 +19,13 @@ import java.util.List;
  */
 public class ExtendedDynammicSolver extends Solver {
 
+    private Barometer barometer;
     private List<Parcel> parsedList = new ArrayList<Parcel>();
     List<Integer> indexArray = new ArrayList<Integer>();
 
-    public ExtendedDynammicSolver(List<Parcel> parcelList) {
+    public ExtendedDynammicSolver(List<Parcel> parcelList, Barometer barometer) {
         super(parcelList);
+        this.barometer = barometer;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class ExtendedDynammicSolver extends Solver {
             }
         }
 
-        DynammicSolver solver = new DynammicSolver(parsedList);
+        DynammicSolver solver = new DynammicSolver(parsedList, barometer);
         List<Parcel> simpleSolutionList = solver.solve(maxWeight);
         List<Parcel> solutionList = new ArrayList<Parcel>();
 

@@ -30,16 +30,24 @@ public class Main {
                     System.out.println("Enter file name to print test results to.");
 
                     filename = getFile(scanner);
-                    Tester.generateTestFile(filename, maxWeight, maxValue, knapSackWeight, numParcel, polyEnumeration,numTests);
+
+                    if(askBoolean(scanner, "Solve generated cases or leave unsolved?")){
+                        Tester.generateTestFile(filename, maxWeight, maxValue, knapSackWeight, numParcel, polyEnumeration,numTests, true);
+                    } else {
+                        Tester.generateTestFile(filename, maxWeight, maxValue, knapSackWeight, numParcel, polyEnumeration,numTests, false);
+                    }
+
                 }
 
                 if (askBoolean(scanner, "Run tests?")) {
                     filename = getFile(scanner);
 
+                    int knapSackWeight = askInt(scanner, "Enter maximum weight of KnapSack.");
+
                     if (askBoolean(scanner, "Run using dynammic programming?")) {
-                        Tester.testSolver(filename, 18, new ExtendedDynammicSolver(null));
+                        Tester.testSolver(filename, knapSackWeight, new ExtendedDynammicSolver(null, null));
                     } else {
-                        Tester.testSolver(filename, 18, new EnumerateSolver(null, false));
+                        Tester.testSolver(filename, knapSackWeight, new EnumerateSolver(null, false));
                     }
                 }
             } else {
@@ -55,18 +63,18 @@ public class Main {
                 int maxWeight = askInt(scanner, "Enter maximum weight");
 
                 Barometer barometer = new Barometer("dynammicBarometer.txt", maxWeight);
-                Solver solver = new DynammicSolver(parcelList);
+                Solver solver = new DynammicSolver(parcelList, null);
 
                 if (askBoolean(scanner, "Run 0-1 KnapSack Assumption")) {
 
                     if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
-                        solver = new DynammicSolver(parcelList);
+                        solver = new DynammicSolver(parcelList, null);
                     } else {
                         solver = new EnumerateSolver(parcelList, false);
                     }
                 } else {
                     if (askBoolean(scanner, "Solve using dynammic solution (Y) or enumeration (N)")) {
-                        solver = new ExtendedDynammicSolver(parcelList);
+                        solver = new ExtendedDynammicSolver(parcelList, null);
                     } else {
                         solver = new EnumerateSolver(parcelList, true);
                     }
